@@ -1,0 +1,385 @@
+:root {
+  --bg: #f4f4f2;
+  --panel: #ffffff;
+  --line: #e2e2de;
+  --ink: #1d1d1d;
+  --muted: #7a7a74;
+  --accent: #1971c2;
+  --danger: #e03131;
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.wb-app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* ------------------------------------------------------------------ header */
+
+.wb-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 14px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+  flex: 0 0 auto;
+}
+
+.wb-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 650;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.wb-logo {
+  color: var(--accent);
+  font-size: 18px;
+}
+
+.wb-cell-readout {
+  margin-left: auto;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 12px;
+  color: var(--muted);
+  min-width: 44px;
+  text-align: right;
+}
+
+/* ----------------------------------------------------------------- toolbar */
+
+.wb-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.wb-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.wb-divider {
+  width: 1px;
+  height: 22px;
+  background: var(--line);
+}
+
+.wb-btn {
+  min-width: 30px;
+  height: 30px;
+  padding: 0 7px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.wb-btn:hover {
+  background: #efefec;
+}
+
+.wb-btn.is-active {
+  background: #e3effb;
+  border-color: #b9d8f5;
+  color: var(--accent);
+}
+
+.wb-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.wb-btn.wb-primary {
+  background: var(--accent);
+  color: #fff;
+  padding: 0 14px;
+  font-weight: 550;
+}
+
+.wb-btn.wb-danger:hover {
+  background: #ffe3e3;
+  color: var(--danger);
+}
+
+.wb-swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.wb-swatch.is-active {
+  border-color: var(--ink);
+}
+
+.wb-link {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* -------------------------------------------------------------------- main */
+
+.wb-main {
+  flex: 1 1 auto;
+  display: flex;
+  min-height: 0;
+}
+
+.wb-canvas-wrap {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.wb-canvas {
+  display: block;
+  touch-action: none;
+  cursor: default;
+}
+
+.wb-canvas.wb-tool-pen,
+.wb-canvas.wb-tool-rect,
+.wb-canvas.wb-tool-ellipse,
+.wb-canvas.wb-tool-diamond,
+.wb-canvas.wb-tool-triangle,
+.wb-canvas.wb-tool-star,
+.wb-canvas.wb-tool-note,
+.wb-canvas.wb-tool-text,
+.wb-canvas.wb-tool-arrow {
+  cursor: crosshair;
+}
+
+.wb-canvas.wb-tool-eraser {
+  cursor: cell;
+}
+
+.wb-text-editor {
+  position: absolute;
+  z-index: 5;
+  border: 2px solid var(--accent);
+  border-radius: 4px;
+  padding: 6px;
+  font: inherit;
+  font-size: 18px;
+  resize: none;
+  outline: none;
+  background: #fff;
+}
+
+/* ---------------------------------------------------------------- ai panel */
+
+.wb-ai {
+  flex: 0 0 340px;
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  border-left: 1px solid var(--line);
+  min-height: 0;
+}
+
+.wb-ai-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.wb-ai-title {
+  font-weight: 650;
+  font-size: 13px;
+}
+
+.wb-ai-meta {
+  font-size: 11px;
+  color: var(--muted);
+  margin-right: auto;
+}
+
+.wb-ai-log {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wb-ai-empty {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.wb-ai-msg {
+  font-size: 13px;
+  line-height: 1.45;
+  padding: 7px 10px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.wb-ai-you {
+  background: #e3effb;
+  align-self: flex-end;
+  max-width: 90%;
+}
+
+.wb-ai-board {
+  background: #f2f2ef;
+  color: #444;
+}
+
+.wb-ai-model {
+  display: block;
+  margin-top: 4px;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 10px;
+  color: var(--muted);
+  opacity: 0.8;
+}
+
+.wb-ai-msg.is-bad {
+  background: #ffe3e3;
+  color: #9b1c1c;
+}
+
+.wb-ai-input {
+  display: flex;
+  gap: 6px;
+  padding: 10px;
+  border-top: 1px solid var(--line);
+}
+
+.wb-ai-input input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font: inherit;
+  font-size: 13px;
+  outline: none;
+}
+
+.wb-ai-input input:focus {
+  border-color: var(--accent);
+}
+
+/* ------------------------------------------------------------------- modal */
+
+.wb-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.wb-modal {
+  width: min(820px, 92vw);
+  max-height: 86vh;
+  background: var(--panel);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.wb-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+  flex: 0 0 auto;
+}
+
+.wb-modal-tabs {
+  display: flex;
+  gap: 2px;
+  padding: 8px 10px 0;
+  border-bottom: 1px solid var(--line);
+  overflow-x: auto;
+  flex: 0 0 auto;
+}
+
+.wb-tab {
+  border: none;
+  background: transparent;
+  padding: 7px 12px;
+  border-radius: 6px 6px 0 0;
+  font: inherit;
+  font-size: 12px;
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.wb-tab:hover {
+  background: #f2f2ef;
+}
+
+.wb-tab.is-active {
+  color: var(--accent);
+  background: #e3effb;
+  font-weight: 600;
+}
+
+.wb-modal-body {
+  margin: 0;
+  padding: 16px;
+  overflow: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 12px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 900px) {
+  .wb-ai {
+    flex-basis: 280px;
+  }
+}

@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=1600" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600;1,700&family=Work+Sans:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&family=Archivo:wght@400;500;600;700;800&family=Courier+Prime:wght@400;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<style>
+  :root {
+    --s-app: #17201d; --s-app-2: #1e2926; --s-app-3: #121a17;
+    --s-line: rgba(236,228,208,0.14); --s-line-2: rgba(236,228,208,0.08);
+    --s-ink: #f1ebda; --s-ink-2: #a7b2ab; --s-ink-3: #78837c;
+    --s-accent: #e0a33d; --s-accent-2: #c8892a; --s-accent-ink: #23180a;
+    --s-accent-soft: rgba(224,163,61,0.16); --s-accent-line: rgba(224,163,61,0.45);
+    --s-ai: #7fb7a3; --s-ai-soft: rgba(127,183,163,0.16); --s-ai-line: rgba(127,183,163,0.45);
+    --s-paper: #f5efe0; --s-paper-2: #ebe3d0; --s-paper-line: rgba(38,48,44,0.09);
+    --s-paper-ink: #26302c; --s-paper-ink-2: #6b7671; --s-paper-edge: rgba(0,0,0,0.35);
+    --s-data: #5f8f6f; --s-data-soft: rgba(95,143,111,0.14);
+    --s-warn: #cf8b3a; --s-warn-soft: rgba(207,139,58,0.14); --s-danger: #c25a4a;
+    --s-radius: 10px; --s-radius-sm: 6px;
+    --s-font-display: 'Playfair Display', Georgia, serif;
+    --s-font-ui: 'Work Sans', system-ui, sans-serif;
+    --s-font-mono: 'Courier Prime', ui-monospace, monospace;
+    --s-tap: 40px; --s-fs: 14px; --s-fs-sm: 12.5px;
+  }
+  body { margin: 0; background: #0e100f; }
+  a { color: var(--s-accent); text-decoration: none; }
+  a:hover { color: var(--s-accent-2); }
+  @keyframes s-pulse { 0% { box-shadow: 0 0 0 0 var(--s-accent-soft); } 70% { box-shadow: 0 0 0 10px rgba(0,0,0,0); } 100% { box-shadow: 0 0 0 0 rgba(0,0,0,0); } }
+</style>
+</helmet>
+
+<div style="width: 1600px; margin: 0 auto; padding: 28px 40px 56px; font-family: var(--s-font-ui); background: #0e100f; color: #e8e4dc; box-sizing: border-box;">
+
+  <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; padding-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.12);">
+    <div style="max-width: 660px;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #8b8781;">Slate · frontend exploration</div>
+      <h1 style="margin: 6px 0 0; font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.05; color: #f6f2ea;">Four colour &amp; type pairings</h1>
+      <p style="margin: 10px 0 0; font-size: 14.5px; line-height: 1.55; color: #a09b93; text-wrap: pretty;">The full app screen, recreated from the current build, re-themed live. Playfair Display carries display type in every pairing; the companion sans and mono change. Accent means <em style="color: #cec9c1; font-style: normal;">selection &amp; interaction</em> only — AI authorship gets its own hue. Slides are paper inside a dark shell; panels are docked and opaque for projector legibility.</p>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-end;">
+      <div style="display: flex; gap: 6px; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.09);">
+        <button onClick="{{ setP0 }}" style="{{ chip0 }}">Chalkline</button>
+        <button onClick="{{ setP1 }}" style="{{ chip1 }}">Lecture Hall</button>
+        <button onClick="{{ setP2 }}" style="{{ chip2 }}">Drafting</button>
+        <button onClick="{{ setP3 }}" style="{{ chip3 }}">Broadsheet</button>
+      </div>
+      <div style="display: flex; gap: 6px; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.09);">
+        <button onClick="{{ setDark }}" style="{{ modeDark }}">Dark shell</button>
+        <button onClick="{{ setLight }}" style="{{ modeLight }}">Light shell</button>
+      </div>
+    </div>
+  </div>
+  <div style="{{ themeVars }}">
+
+    <div style="display: flex; align-items: baseline; gap: 18px; padding: 20px 2px 14px;">
+      <div style="font-family: var(--s-font-display); font-size: 22px; font-weight: 700; color: #f6f2ea;">{{ pairName }}</div>
+      <div style="font-family: var(--s-font-mono); font-size: 12.5px; color: #8b8781; letter-spacing: 0.02em;">{{ pairFonts }}</div>
+      <div style="margin-left: auto; font-size: 13.5px; color: #a09b93; max-width: 720px; text-align: right;">{{ pairBlurb }}</div>
+    </div>
+
+    <div style="width: 1520px; height: 920px; border-radius: 14px; overflow: hidden; position: relative; background: var(--s-app); border: 1px solid var(--s-line); box-shadow: 0 30px 70px -30px rgba(0,0,0,0.75); font-family: var(--s-font-ui); color: var(--s-ink);">
+
+      <header style="height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 0 16px; background: var(--s-app-2); border-bottom: 1px solid var(--s-line); position: relative; z-index: 50;">
+
+        <div style="display: flex; align-items: center; gap: 11px; flex-shrink: 0;">
+          <div style="width: 38px; height: 38px; border-radius: 9px; background: var(--s-accent); color: var(--s-accent-ink); display: flex; align-items: center; justify-content: center; font-family: var(--s-font-display); font-size: 21px; font-weight: 700; line-height: 1;">S</div>
+          <div style="display: flex; flex-direction: column; gap: 1px;">
+            <div style="font-family: var(--s-font-display); font-size: 20px; font-weight: 700; letter-spacing: -0.01em; line-height: 1; color: var(--s-ink);">Slate</div>
+            <div style="font-size: 10.5px; letter-spacing: 0.09em; text-transform: uppercase; color: var(--s-ink-3);">Structured AI whiteboard</div>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 2px; background: var(--s-app-3); padding: 4px; border-radius: 12px; border: 1px solid var(--s-line-2);">
+          <button title="Select (V)" style="width: var(--s-tap); height: var(--s-tap); border-radius: 8px; border: none; background: var(--s-accent); color: var(--s-accent-ink); display: flex; align-items: center; justify-content: center; cursor: pointer;"><i data-lucide="mouse-pointer-2" style="width: 19px; height: 19px;"></i></button>
+          <button title="Pan (H)" style="width: var(--s-tap); height: var(--s-tap); border-radius: 8px; border: none; background: transparent; color: var(--s-ink-2); display: flex; align-items: center; justify-content: center; cursor: pointer;" style-hover="background: var(--s-line-2); color: var(--s-ink);"><i data-lucide="hand" style="width: 19px; height: 19px;"></i></button>
+          <div style="width: 1px; height: 22px; background: var(--s-line); margin: 0 4px;"></div>
+          <button title="Box" style="width: var(--s-tap); height: var(--s-tap); border-radius: 8px; border: none; background: transparent; color: var(--s-ink-2); display: flex; align-items: center; justify-content: center; cursor: pointer;" style-hover="background: var(--s-line-2); color: var(--s-ink);"><i data-lucide="square" style="width: 19px; height: 19px;"></i></button>
+          <button title="Circle" style="width: var(--s-tap); height: var(--s-tap); border-radius: 8px; border: none; background: transparent; color: var(--s-ink-2); display: flex; align-items: center; justify-content: center; cursor: pointer;" style-hover="background: var(--s-line-2); color: var(--s-ink);"><i data-lucide="circle" style="width: 19px; height: 19px;"></i></button>
+          <button title="Cylinder (DB)" style="width: var(--s-tap); height: var(--s-tap); border-radius: 8px; border: none; background: transparent; color: var(--s-ink-2); display: flex; align-items: center; justify-content: center; cursor: pointer;" style-hover="background: var(--s-line-2); color: var(--s-ink);"><i data-lucide="database" style="width: 19px; height: 19px;"></i></button>
+          <button title="Frame container" style="width: var(--s-tap); height: var(--s-tap); border-radius: 8px; border: none; background: transparent; color: var(--s-ink-2); display: flex; align-items: center; justify-content: center; cursor: pointer;" style-hover="background: var(--s-line-2); color: var(--s-ink);"><i data-lucide="frame" style="width: 19px; height: 19px;"></i></button>
+          <button title="Connector edge" style="width: var(--s-tap); height: var(--s-tap); border-radius: 8px; border: none; background: transparent; color: var(--s-ink-2); display: flex; align-items: center; justify-content: center; cursor: pointer;" style-hover="background: var(--s-line-2); color: var(--s-ink);"><i data-lucide="arrow-right" style="width: 19px; height: 19px;"></i></button>
+          <div style="width: 1px; height: 22px; background: var(--s-line); margin: 0 4px;"></div>
+          <button title="Text label" style="width: var(--s-tap); height: var(--s-tap); border-radius: 8px; border: none; background: transparent; color: var(--s-ink-2); display: flex; align-items: center; justify-content: center; cursor: pointer;" style-hover="background: var(--s-line-2); color: var(--s-ink);"><i data-lucide="type" style="width: 19px; height: 19px;"></i></button>
+          <button title="Sticky note" style="width: var(--s-tap); height: var(--s-tap); border-radius: 8px; border: none; background: transparent; color: var(--s-ink-2); display: flex; align-items: center; justify-content: center; cursor: pointer;" style-hover="background: var(--s-line-2); color: var(--s-ink);"><i data-lucide="sticky-note" style="width: 19px; height: 19px;"></i></button>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+          <button title="Upload lecture notes for retrieval" style="display: flex; align-items: center; gap: 7px; height: var(--s-tap); padding: 0 13px; border-radius: 9px; border: 1px solid var(--s-ai-line); background: var(--s-ai-soft); color: var(--s-ink); font-size: var(--s-fs-sm); font-weight: 600; font-family: inherit; cursor: pointer;">
+            <i data-lucide="book-open" style="width: 16px; height: 16px; color: var(--s-ai);"></i><span>Notes 2</span>
+          </button>
+          <button title="Change AI model" style="display: flex; align-items: center; gap: 7px; height: var(--s-tap); padding: 0 12px; border-radius: 9px; border: 1px solid var(--s-line); background: var(--s-app-3); color: var(--s-ink); font-size: var(--s-fs-sm); font-weight: 600; font-family: inherit; cursor: pointer;">
+            <i data-lucide="sparkles" style="width: 16px; height: 16px; color: var(--s-ai);"></i><span>DeepSeek V4</span><i data-lucide="chevron-down" style="width: 14px; height: 14px; color: var(--s-ink-3);"></i>
+          </button>
+          <button title="Transcribe handwriting (TrOCR)" style="width: var(--s-tap); height: var(--s-tap); border-radius: 9px; border: 1px solid var(--s-line); background: var(--s-app-3); color: var(--s-ink-2); display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative;">
+            <i data-lucide="scan-text" style="width: 18px; height: 18px;"></i>
+            <span style="position: absolute; top: 5px; right: 5px; width: 6px; height: 6px; border-radius: 50%; background: var(--s-data);"></span>
+          </button>
+          <button title="Push to talk" style="display: flex; align-items: center; gap: 8px; height: var(--s-tap); padding: 0 16px; border-radius: 9px; border: none; background: var(--s-accent); color: var(--s-accent-ink); font-size: var(--s-fs); font-weight: 600; font-family: inherit; cursor: pointer; animation: s-pulse 2.4s infinite;">
+            <i data-lucide="mic" style="width: 17px; height: 17px;"></i><span>Speak</span>
+          </button>
+          <button title="Toggle chat feed" style="width: var(--s-tap); height: var(--s-tap); border-radius: 9px; border: 1px solid var(--s-ai-line); background: var(--s-ai-soft); color: var(--s-ai); display: flex; align-items: center; justify-content: center; cursor: pointer;"><i data-lucide="message-square" style="width: 18px; height: 18px;"></i></button>
+          <div style="width: 1px; height: 26px; background: var(--s-line);"></div>
+          <button title="Undo" style="width: 34px; height: var(--s-tap); border: none; background: none; color: var(--s-ink-2); display: flex; align-items: center; justify-content: center; cursor: pointer;"><i data-lucide="rotate-ccw" style="width: 17px; height: 17px;"></i></button>
+          <button title="Redo" style="width: 34px; height: var(--s-tap); border: none; background: none; color: var(--s-ink-3); display: flex; align-items: center; justify-content: center; cursor: pointer;"><i data-lucide="rotate-cw" style="width: 17px; height: 17px;"></i></button>
+          <button title="Clear canvas" style="width: 34px; height: var(--s-tap); border: none; background: none; color: var(--s-danger); display: flex; align-items: center; justify-content: center; cursor: pointer;"><i data-lucide="trash-2" style="width: 17px; height: 17px;"></i></button>
+          <button title="Inspect scene graph" style="width: var(--s-tap); height: var(--s-tap); border-radius: 9px; border: 1px solid var(--s-line); background: var(--s-app-3); color: var(--s-ink-2); display: flex; align-items: center; justify-content: center; cursor: pointer;"><i data-lucide="code" style="width: 17px; height: 17px;"></i></button>
+          <button title="Settings &amp; API keys" style="width: var(--s-tap); height: var(--s-tap); border-radius: 9px; border: 1px solid var(--s-line); background: var(--s-app-3); color: var(--s-ink-2); display: flex; align-items: center; justify-content: center; cursor: pointer;"><i data-lucide="settings" style="width: 18px; height: 18px;"></i></button>
+        </div>
+      </header>
+
+      <div style="position: absolute; top: 68px; left: 0; right: 0; bottom: 0; overflow: hidden; background: var(--s-app); background-image: radial-gradient(var(--s-line-2) 1px, transparent 1px); background-size: 26px 26px;">
+
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) translateX(-186px) scale(0.78); width: 1280px; height: 720px; background: var(--s-paper); border-radius: 10px; box-shadow: 0 34px 80px -24px var(--s-paper-edge); overflow: hidden;">
+
+          <div style="height: 40px; display: flex; align-items: center; justify-content: space-between; padding: 0 18px; background: var(--s-paper-2); border-bottom: 1px solid var(--s-paper-line);">
+            <div style="font-family: var(--s-font-mono); font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--s-paper-ink);">Slide 1 · System Overview</div>
+            <div style="font-family: var(--s-font-mono); font-size: 12.5px; color: var(--s-paper-ink-2);">1280 × 720 · 16:9</div>
+          </div>
+
+          <div style="position: absolute; inset: 40px 0 0 0; background-image: linear-gradient(var(--s-paper-line) 1px, transparent 1px), linear-gradient(90deg, var(--s-paper-line) 1px, transparent 1px); background-size: 40px 40px;"></div>
+
+          <svg width="1280" height="720" style="position: absolute; inset: 0; pointer-events: none;">
+            <defs>
+              <marker id="sl-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--s-paper-ink-2)"></path>
+              </marker>
+            </defs>
+            <line x1="260" y1="155" x2="332" y2="155" stroke="var(--s-paper-ink-2)" stroke-width="2" marker-end="url(#sl-arrow)"></line>
+            <path d="M 500 155 L 650 155 L 650 252" fill="none" stroke="var(--s-paper-ink-2)" stroke-width="2" marker-end="url(#sl-arrow)"></path>
+            <path d="M 180 190 L 180 250 L 246 250" fill="none" stroke="var(--s-paper-ink-2)" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#sl-arrow)"></path>
+          </svg>
+
+          <div style="position: absolute; left: 592px; top: 138px; font-family: var(--s-font-mono); font-size: 12px; padding: 3px 7px; border-radius: 4px; background: var(--s-paper-2); color: var(--s-paper-ink-2); border: 1px solid var(--s-paper-line);">sql query</div>
+
+          <div style="position: absolute; left: 100px; top: 120px; width: 160px; height: 70px; border-radius: 8px; background: var(--s-accent-soft); border: 2px solid var(--s-accent); display: flex; align-items: center; justify-content: center; padding: 0 12px; box-sizing: border-box;">
+            <span style="font-size: 16px; font-weight: 600; color: var(--s-paper-ink); text-align: center;">HTTP Request</span>
+            <span style="position: absolute; top: 5px; right: 7px; font-family: var(--s-font-mono); font-size: 11px; color: var(--s-paper-ink-2);">A1</span>
+          </div>
+
+          <div style="position: absolute; left: 340px; top: 120px; width: 160px; height: 70px; border-radius: 8px; background: var(--s-paper-2); border: 2px solid var(--s-paper-ink-2); display: flex; align-items: center; justify-content: center; padding: 0 12px; box-sizing: border-box; outline: 2px solid var(--s-accent); outline-offset: 5px;">
+            <span style="font-size: 16px; font-weight: 600; color: var(--s-paper-ink); text-align: center;">Load Balancer</span>
+            <span style="position: absolute; top: 5px; right: 7px; font-family: var(--s-font-mono); font-size: 11px; color: var(--s-paper-ink-2);">B1</span>
+            <span style="position: absolute; left: -9px; top: -9px; width: 10px; height: 10px; background: var(--s-accent); border-radius: 2px;"></span>
+            <span style="position: absolute; right: -9px; top: -9px; width: 10px; height: 10px; background: var(--s-accent); border-radius: 2px;"></span>
+            <span style="position: absolute; left: -9px; bottom: -9px; width: 10px; height: 10px; background: var(--s-accent); border-radius: 2px;"></span>
+            <span style="position: absolute; right: -9px; bottom: -9px; width: 10px; height: 10px; background: var(--s-accent); border-radius: 2px;"></span>
+          </div>
+
+          <div style="position: absolute; left: 580px; top: 250px; width: 140px; height: 84px;">
+            <div style="position: absolute; inset: 10px 0 0 0; background: var(--s-data-soft); border-left: 2px solid var(--s-data); border-right: 2px solid var(--s-data); border-bottom: 2px solid var(--s-data); border-radius: 0 0 70px 70px / 0 0 16px 16px;"></div>
+            <div style="position: absolute; left: 0; top: 0; width: 140px; height: 22px; box-sizing: border-box; background: var(--s-data-soft); border: 2px solid var(--s-data); border-radius: 50%;"></div>
+            <div style="position: absolute; inset: 22px 0 14px 0; display: flex; align-items: center; justify-content: center;">
+              <span style="font-size: 16px; font-weight: 600; color: var(--s-paper-ink);">PostgreSQL</span>
+            </div>
+            <span style="position: absolute; top: 26px; right: 8px; font-family: var(--s-font-mono); font-size: 11px; color: var(--s-paper-ink-2);">C2</span>
+          </div>
+
+          <div style="position: absolute; left: 246px; top: 222px; width: 214px; padding: 12px 14px; border-radius: 8px; background: var(--s-paper-2); border: 1px solid var(--s-ai-line); border-left: 3px solid var(--s-ai); box-sizing: border-box;">
+            <div style="display: flex; align-items: center; gap: 6px; font-family: var(--s-font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--s-ai); margin-bottom: 6px;">
+              <i data-lucide="sparkles" style="width: 12px; height: 12px;"></i><span>from notes · p.4</span>
+            </div>
+            <div style="font-size: 15px; line-height: 1.4; color: var(--s-paper-ink);">TLS terminates at the balancer, not the origin.</div>
+          </div>
+
+          <div style="position: absolute; left: 830px; top: 96px; width: 330px; border-radius: 8px; background: var(--s-paper-2); border: 1px solid var(--s-paper-line); overflow: hidden;">
+            <div style="height: 168px; display: flex; align-items: center; justify-content: center; background: repeating-linear-gradient(135deg, transparent, transparent 9px, var(--s-paper-line) 9px, var(--s-paper-line) 10px);">
+              <span style="font-family: var(--s-font-mono); font-size: 12px; color: var(--s-paper-ink-2); background: var(--s-paper); padding: 4px 10px; border-radius: 4px;">figure crop</span>
+            </div>
+            <div style="padding: 9px 12px; display: flex; align-items: center; gap: 8px; border-top: 1px solid var(--s-paper-line);">
+              <span style="font-family: var(--s-font-mono); font-size: 11px; padding: 2px 6px; border-radius: 4px; background: var(--s-ai-soft); color: var(--s-ai); border: 1px solid var(--s-ai-line);">notes p.4</span>
+              <span style="font-family: var(--s-font-display); font-size: 15px; font-style: italic; color: var(--s-paper-ink);">Fig. 3 — Request lifecycle</span>
+            </div>
+          </div>
+
+          <div style="position: absolute; left: 838px; top: 320px; width: 300px;">
+            <svg width="300" height="72" style="display: block;">
+              <path d="M6 46 C 22 12, 34 62, 52 34 C 66 12, 74 56, 92 40 C 104 30, 112 48, 128 36 M 148 20 L 148 52 M 168 52 C 176 20, 192 20, 198 40 C 202 54, 214 50, 220 34 M 240 24 C 232 44, 250 56, 262 42 C 272 30, 268 20, 258 24" fill="none" stroke="var(--s-paper-ink)" stroke-width="3" stroke-linecap="round" opacity="0.8"></path>
+            </svg>
+            <div style="display: flex; align-items: center; gap: 8px; margin-top: 2px;">
+              <span style="font-family: var(--s-font-mono); font-size: 11px; padding: 3px 7px; border-radius: 4px; background: var(--s-ai-soft); color: var(--s-ai); border: 1px solid var(--s-ai-line);">TrOCR</span>
+              <span style="font-size: 14px; color: var(--s-paper-ink-2); font-style: italic;">“retry with backoff”</span>
+            </div>
+          </div>
+
+          <div style="position: absolute; left: 100px; top: 420px; width: 620px; height: 190px; border-radius: 8px; border: 2px dashed var(--s-paper-ink-2); background: rgba(0,0,0,0.02); box-sizing: border-box;">
+            <div style="display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 8px 0 8px 0; background: var(--s-paper-ink-2);">
+              <i data-lucide="frame" style="width: 13px; height: 13px; color: var(--s-paper);"></i>
+              <span style="font-size: 13px; font-weight: 600; letter-spacing: 0.03em; color: var(--s-paper);">Failure path</span>
+            </div>
+            <div style="display: flex; gap: 14px; padding: 16px 18px;">
+              <div style="width: 150px; height: 62px; border-radius: 8px; background: var(--s-warn-soft); border: 2px solid var(--s-warn); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; color: var(--s-paper-ink);">Retry Queue</div>
+              <div style="width: 150px; height: 62px; border-radius: 8px; background: var(--s-paper-2); border: 2px solid var(--s-paper-ink-2); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; color: var(--s-paper-ink);">Dead Letter</div>
+              <div style="flex: 1; padding: 10px 12px; border-radius: 8px; border: 1px dashed var(--s-ai-line); font-size: 13.5px; line-height: 1.45; color: var(--s-paper-ink-2);">
+                <span style="font-family: var(--s-font-mono); font-size: 11px; color: var(--s-ai);">✦ ai-invented</span><br />No matching figure in the notes — nothing was placed.
+              </div>
+            </div>
+          </div>
+
+          <div style="position: absolute; left: 760px; top: 520px; width: 190px; height: 130px; padding: 14px; box-sizing: border-box; background: var(--s-warn-soft); border: 1px solid var(--s-warn); border-radius: 3px; transform: rotate(-1.5deg); box-shadow: 0 8px 18px -8px var(--s-paper-edge);">
+            <div style="font-family: var(--s-font-display); font-size: 17px; line-height: 1.25; color: var(--s-paper-ink);">Ask the room: where should the cache live?</div>
+          </div>
+
+          <div style="position: absolute; left: 1000px; top: 470px; width: 200px; font-family: var(--s-font-display); font-size: 26px; font-weight: 600; font-style: italic; line-height: 1.2; color: var(--s-paper-ink);">
+            One request, four hops.
+          </div>
+        </div>
+
+        <div style="position: absolute; top: 18px; left: 50%; transform: translateX(-50%) translateX(-186px); display: flex; align-items: center; gap: 9px; padding: 7px 12px; border-radius: 12px; background: var(--s-app-2); border: 1px solid var(--s-line); box-shadow: 0 14px 34px -12px rgba(0,0,0,0.6); z-index: 45;">
+          <input type="text" value="Load Balancer" readonly="readonly" style="height: 34px; width: 168px; padding: 0 11px; border-radius: 8px; border: 1px solid var(--s-accent-line); background: var(--s-app-3); color: var(--s-ink); font-family: inherit; font-size: var(--s-fs); outline: none;" />
+          <button style="display: flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border-radius: 8px; border: none; background: var(--s-accent); color: var(--s-accent-ink); font-family: inherit; font-size: var(--s-fs-sm); font-weight: 600; cursor: pointer;"><i data-lucide="mic" style="width: 15px; height: 15px;"></i><span>Dictate</span></button>
+          <button style="display: flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--s-line); background: var(--s-app-3); color: var(--s-ink); font-family: inherit; font-size: var(--s-fs-sm); font-weight: 500; cursor: pointer;"><i data-lucide="keyboard" style="width: 15px; height: 15px;"></i><span>Keyboard</span></button>
+          <div style="width: 1px; height: 22px; background: var(--s-line);"></div>
+          <div style="display: flex; gap: 5px; align-items: center;">
+            <span style="width: 18px; height: 18px; border-radius: 50%; background: var(--s-paper-ink-2); border: 2px solid var(--s-ink);"></span>
+            <span style="width: 18px; height: 18px; border-radius: 50%; background: var(--s-accent);"></span>
+            <span style="width: 18px; height: 18px; border-radius: 50%; background: var(--s-data);"></span>
+            <span style="width: 18px; height: 18px; border-radius: 50%; background: var(--s-warn);"></span>
+          </div>
+          <div style="width: 1px; height: 22px; background: var(--s-line);"></div>
+          <button title="Duplicate" style="width: 32px; height: 34px; border: none; background: none; color: var(--s-ink-2); display: flex; align-items: center; justify-content: center; cursor: pointer;"><i data-lucide="copy" style="width: 16px; height: 16px;"></i></button>
+          <button title="Bring forward" style="width: 32px; height: 34px; border: none; background: none; color: var(--s-ink-2); display: flex; align-items: center; justify-content: center; cursor: pointer;"><i data-lucide="bring-to-front" style="width: 16px; height: 16px;"></i></button>
+          <button title="Lock" style="width: 32px; height: 34px; border: none; background: none; color: var(--s-ink-2); display: flex; align-items: center; justify-content: center; cursor: pointer;"><i data-lucide="lock" style="width: 16px; height: 16px;"></i></button>
+          <button title="Delete" style="width: 32px; height: 34px; border: none; background: none; color: var(--s-danger); display: flex; align-items: center; justify-content: center; cursor: pointer;"><i data-lucide="trash-2" style="width: 16px; height: 16px;"></i></button>
+        </div>
+
+        <div style="position: absolute; top: 84px; left: 14px; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 7px 5px; border-radius: 14px; background: var(--s-app-2); border: 1px solid var(--s-line); z-index: 44;">
+          <button title="Ink pen (P)" style="width: 38px; height: 38px; border-radius: 9px; border: none; background: var(--s-accent); color: var(--s-accent-ink); display: flex; align-items: center; justify-content: center; cursor: pointer;"><i data-lucide="pen-tool" style="width: 18px; height: 18px;"></i></button>
+          <button title="Highlighter" style="width: 38px; height: 38px; border-radius: 9px; border: none; background: transparent; color: var(--s-ink-2); display: flex; align-items: center; justify-content: center; cursor: pointer;" style-hover="background: var(--s-line-2); color: var(--s-ink);"><i data-lucide="highlighter" style="width: 18px; height: 18px;"></i></button>
+          <button title="Eraser (E)" style="width: 38px; height: 38px; border-radius: 9px; border: none; background: transparent; color: var(--s-ink-2); display: flex; align-items: center; justify-content: center; cursor: pointer;" style-hover="background: var(--s-line-2); color: var(--s-ink);"><i data-lucide="eraser" style="width: 18px; height: 18px;"></i></button>
+          <button title="Laser pointer" style="width: 38px; height: 38px; border-radius: 9px; border: none; background: transparent; color: var(--s-ink-2); display: flex; align-items: center; justify-content: center; cursor: pointer;" style-hover="background: var(--s-line-2); color: var(--s-ink);"><i data-lucide="crosshair" style="width: 18px; height: 18px;"></i></button>
+          <div style="width: 22px; height: 1px; background: var(--s-line); margin: 5px 0;"></div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+            <span style="font-family: var(--s-font-mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--s-ink-3);">ink</span>
+            <span style="width: 20px; height: 20px; border-radius: 50%; background: var(--s-paper-ink); border: 2px solid var(--s-ink);"></span>
+            <span style="width: 20px; height: 20px; border-radius: 50%; background: var(--s-accent);"></span>
+            <span style="width: 20px; height: 20px; border-radius: 50%; background: var(--s-data);"></span>
+          </div>
+          <div style="width: 22px; height: 1px; background: var(--s-line); margin: 5px 0;"></div>
+          <span style="font-family: var(--s-font-mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--s-ink-3); padding-bottom: 3px;">add</span>
+          <button title="Add box node" style="width: 38px; height: 38px; border-radius: 9px; border: 1px solid var(--s-line); background: var(--s-app-3); color: var(--s-ink); display: flex; align-items: center; justify-content: center; cursor: pointer;"><i data-lucide="square" style="width: 17px; height: 17px;"></i></button>
+          <button title="Add database node" style="width: 38px; height: 38px; border-radius: 9px; border: 1px solid var(--s-line); background: var(--s-app-3); color: var(--s-ink); display: flex; align-items: center; justify-content: center; cursor: pointer;"><i data-lucide="database" style="width: 17px; height: 17px;"></i></button>
+          <button title="Add sticky note" style="width: 38px; height: 38px; border-radius: 9px; border: 1px solid var(--s-line); background: var(--s-app-3); color: var(--s-ink); display: flex; align-items: center; justify-content: center; cursor: pointer;"><i data-lucide="sticky-note" style="width: 17px; height: 17px;"></i></button>
+        </div>
+
+        <div style="position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%) translateX(-186px); display: flex; align-items: center; gap: 12px; padding: 7px 14px; border-radius: 14px; background: var(--s-app-2); border: 1px solid var(--s-line); box-shadow: 0 16px 34px -14px rgba(0,0,0,0.6); z-index: 50;">
+          <button style="display: flex; align-items: center; gap: 7px; height: 34px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--s-accent-line); background: var(--s-accent-soft); color: var(--s-ink); font-family: inherit; font-size: var(--s-fs-sm); font-weight: 600; cursor: pointer;"><i data-lucide="layers" style="width: 15px; height: 15px;"></i><span>Deck 3</span></button>
+          <div style="width: 1px; height: 20px; background: var(--s-line);"></div>
+          <button style="width: 30px; height: 34px; border: none; background: none; color: var(--s-ink); display: flex; align-items: center; justify-content: center; cursor: pointer;"><i data-lucide="chevron-left" style="width: 20px; height: 20px;"></i></button>
+          <div style="display: flex; align-items: center; gap: 9px;">
+            <span style="font-family: var(--s-font-display); font-size: 17px; font-weight: 600; color: var(--s-ink);">System Overview</span>
+            <i data-lucide="pencil" style="width: 13px; height: 13px; color: var(--s-ink-3);"></i>
+            <span style="font-family: var(--s-font-mono); font-size: 12px; color: var(--s-ink-2); background: var(--s-app-3); padding: 3px 9px; border-radius: 10px;">1 / 3</span>
+          </div>
+          <button style="width: 30px; height: 34px; border: none; background: none; color: var(--s-ink); display: flex; align-items: center; justify-content: center; cursor: pointer;"><i data-lucide="chevron-right" style="width: 20px; height: 20px;"></i></button>
+          <div style="width: 1px; height: 20px; background: var(--s-line);"></div>
+          <button style="display: flex; align-items: center; gap: 6px; height: 34px; padding: 0 13px; border-radius: 9px; border: none; background: var(--s-accent); color: var(--s-accent-ink); font-family: inherit; font-size: var(--s-fs-sm); font-weight: 600; cursor: pointer;"><i data-lucide="plus" style="width: 15px; height: 15px;"></i><span>New slide</span></button>
+          <button style="display: flex; align-items: center; gap: 6px; height: 34px; padding: 0 13px; border-radius: 9px; border: 1px solid var(--s-line); background: var(--s-app-3); color: var(--s-ink); font-family: inherit; font-size: var(--s-fs-sm); font-weight: 600; cursor: pointer;"><i data-lucide="play" style="width: 15px; height: 15px;"></i><span>Present</span></button>
+        </div>
+
+        <div style="position: absolute; bottom: 74px; right: 396px; display: flex; align-items: center; gap: 6px; padding: 5px 9px; border-radius: 11px; background: var(--s-app-2); border: 1px solid var(--s-line); z-index: 40; color: var(--s-ink-2);">
+          <button title="Snap to grid" style="display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 10px; border-radius: 7px; border: 1px solid var(--s-accent-line); background: var(--s-accent-soft); color: var(--s-ink); font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;"><i data-lucide="grid-3x3" style="width: 14px; height: 14px;"></i><span>Snap</span></button>
+          <div style="width: 1px; height: 18px; background: var(--s-line);"></div>
+          <button title="Zoom out" style="width: 28px; height: 30px; border: none; background: none; color: inherit; display: flex; align-items: center; justify-content: center; cursor: pointer;"><i data-lucide="zoom-out" style="width: 16px; height: 16px;"></i></button>
+          <span style="font-family: var(--s-font-mono); font-size: 12px; min-width: 44px; text-align: center; color: var(--s-ink);">78%</span>
+          <button title="Zoom in" style="width: 28px; height: 30px; border: none; background: none; color: inherit; display: flex; align-items: center; justify-content: center; cursor: pointer;"><i data-lucide="zoom-in" style="width: 16px; height: 16px;"></i></button>
+          <button title="Fit slide" style="width: 28px; height: 30px; border: none; background: none; color: inherit; display: flex; align-items: center; justify-content: center; cursor: pointer;"><i data-lucide="maximize-2" style="width: 15px; height: 15px;"></i></button>
+        </div>
+
+        <div style="position: absolute; top: 16px; right: 16px; bottom: 16px; width: 360px; display: flex; flex-direction: column; background: var(--s-app-2); border: 1px solid var(--s-line); border-radius: 14px; overflow: hidden; z-index: 55;">
+          <div style="padding: 13px 15px; border-bottom: 1px solid var(--s-line); background: var(--s-app-3); display: flex; align-items: flex-start; justify-content: space-between;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <i data-lucide="message-square" style="width: 17px; height: 17px; color: var(--s-ai);"></i>
+                <span style="font-family: var(--s-font-display); font-size: 17px; font-weight: 700; color: var(--s-ink);">Voice &amp; text</span>
+              </div>
+              <div style="font-family: var(--s-font-mono); font-size: 11.5px; color: var(--s-ai); margin-top: 3px;">active: DeepSeek V4 Flash</div>
+            </div>
+            <div style="display: flex; gap: 4px;">
+              <button style="width: 28px; height: 28px; border: none; background: none; color: var(--s-ink-3); display: flex; align-items: center; justify-content: center; cursor: pointer;"><i data-lucide="trash-2" style="width: 15px; height: 15px;"></i></button>
+              <button style="width: 28px; height: 28px; border: none; background: none; color: var(--s-ink-3); display: flex; align-items: center; justify-content: center; cursor: pointer;"><i data-lucide="x" style="width: 16px; height: 16px;"></i></button>
+            </div>
+          </div>
+
+          <div style="flex: 1; padding: 15px; display: flex; flex-direction: column; gap: 13px; overflow: hidden;">
+            <div style="padding: 10px 12px; border-radius: 10px; background: var(--s-app-3); border: 1px solid var(--s-line-2); font-size: 13.5px; line-height: 1.5; color: var(--s-ink-2);">
+              <span style="display: block; font-family: var(--s-font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--s-ink-3); margin-bottom: 4px;">system</span>
+              2 documents indexed · 41 pages. Speak or type a command.
+            </div>
+
+            <div style="align-self: flex-end; max-width: 88%; padding: 10px 13px; border-radius: 12px 12px 4px 12px; background: var(--s-accent); color: var(--s-accent-ink); font-size: 14px; line-height: 1.45;">
+              <span style="display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; opacity: 0.75; margin-bottom: 4px;"><i data-lucide="mic" style="width: 11px; height: 11px;"></i>you · 14:22</span>
+              Add a Redis cache between the balancer and Postgres, and pull the figure for the request lifecycle.
+            </div>
+
+            <div style="max-width: 92%; padding: 11px 13px; border-radius: 12px 12px 12px 4px; background: var(--s-app-3); border: 1px solid var(--s-ai-line); font-size: 14px; line-height: 1.5; color: var(--s-ink);">
+              <span style="display: flex; align-items: center; gap: 5px; font-family: var(--s-font-mono); font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--s-ai); margin-bottom: 6px;"><i data-lucide="sparkles" style="width: 12px; height: 12px;"></i>slate ai · deepseek v4</span>
+              Placed <strong style="font-weight: 600;">Redis Cache</strong> at C1 and connected it. Figure 3 came from your notes, page 4.
+              <div style="margin-top: 9px; padding: 9px 10px; border-radius: 8px; background: var(--s-app); border: 1px solid var(--s-line-2); font-family: var(--s-font-mono); font-size: 12px; line-height: 1.6; color: var(--s-data); white-space: pre-wrap;">add n4 cylinder "Redis Cache" C1
+connect n2 n4 "cache read"
+place fig p4.f3 D1</div>
+              <button style="margin-top: 8px; display: flex; align-items: center; gap: 5px; background: none; border: none; padding: 0; font-family: var(--s-font-mono); font-size: 11.5px; color: var(--s-ink-3); cursor: pointer;"><i data-lucide="code" style="width: 12px; height: 12px;"></i><span>view scene graph sent</span><i data-lucide="chevron-down" style="width: 12px; height: 12px;"></i></button>
+            </div>
+
+            <div style="max-width: 92%; padding: 11px 13px; border-radius: 12px 12px 12px 4px; background: var(--s-app-3); border: 1px solid var(--s-line-2); font-size: 13.5px; line-height: 1.5; color: var(--s-ink-2);">
+              <span style="display: flex; align-items: center; gap: 5px; font-family: var(--s-font-mono); font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--s-ai); margin-bottom: 6px;"><i data-lucide="scan-text" style="width: 12px; height: 12px;"></i>trocr · cluster 1</span>
+              Read your handwriting as <span style="color: var(--s-ink); font-style: italic;">“retry with backoff”</span> — add it as a node?
+              <div style="display: flex; gap: 7px; margin-top: 9px;">
+                <button style="height: 30px; padding: 0 12px; border-radius: 7px; border: none; background: var(--s-accent); color: var(--s-accent-ink); font-family: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer;">Add node</button>
+                <button style="height: 30px; padding: 0 12px; border-radius: 7px; border: 1px solid var(--s-line); background: transparent; color: var(--s-ink-2); font-family: inherit; font-size: 12.5px; cursor: pointer;">Dismiss</button>
+              </div>
+            </div>
+          </div>
+
+          <div style="padding: 12px; border-top: 1px solid var(--s-line); background: var(--s-app-3); display: flex; gap: 8px; align-items: center;">
+            <input type="text" placeholder="Speak or type a command…" style="flex: 1; height: 38px; padding: 0 13px; border-radius: 10px; border: 1px solid var(--s-line); background: var(--s-app); color: var(--s-ink); font-family: inherit; font-size: 13.5px; outline: none;" />
+            <button style="width: 38px; height: 38px; border-radius: 10px; border: none; background: var(--s-accent); color: var(--s-accent-ink); display: flex; align-items: center; justify-content: center; cursor: pointer;"><i data-lucide="send" style="width: 16px; height: 16px;"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 44px; padding-top: 26px; border-top: 1px solid rgba(255,255,255,0.12);">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #8b8781; margin-bottom: 18px;">Side by side</div>
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
+
+      <div style="border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);">
+        <div style="padding: 20px; background: #17201d;">
+          <div style="font-family: 'Playfair Display', serif; font-size: 27px; font-weight: 700; color: #f1ebda; line-height: 1.1;">Chalkline</div>
+          <div style="font-family: 'Courier Prime', monospace; font-size: 11.5px; color: #a7b2ab; margin-top: 6px;">Playfair · Work Sans · Courier Prime</div>
+          <div style="font-family: 'Work Sans', sans-serif; font-size: 13.5px; line-height: 1.5; color: #a7b2ab; margin-top: 12px;">Warm blackboard, cream paper. Chalk amber selects; sage marks AI.</div>
+          <div style="display: flex; gap: 6px; margin-top: 16px;">
+            <span style="flex: 1; height: 30px; border-radius: 6px; background: #e0a33d;"></span>
+            <span style="flex: 1; height: 30px; border-radius: 6px; background: #7fb7a3;"></span>
+            <span style="flex: 1; height: 30px; border-radius: 6px; background: #5f8f6f;"></span>
+            <span style="flex: 1; height: 30px; border-radius: 6px; background: #f5efe0;"></span>
+            <span style="flex: 1; height: 30px; border-radius: 6px; background: #1e2926; border: 1px solid rgba(255,255,255,0.14);"></span>
+          </div>
+        </div>
+        <div style="padding: 14px 20px; background: #f5efe0; font-family: 'Work Sans', sans-serif; font-size: 12.5px; color: #26302c;">Slide paper · <span style="font-family: 'Courier Prime', monospace;">A1 B1 C2</span></div>
+      </div>
+
+      <div style="border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);">
+        <div style="padding: 20px; background: #131722;">
+          <div style="font-family: 'Playfair Display', serif; font-size: 27px; font-weight: 700; color: #eef2f8; line-height: 1.1;">Lecture Hall</div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #9aa6bd; margin-top: 6px;">Playfair · IBM Plex Sans · Plex Mono</div>
+          <div style="font-family: 'IBM Plex Sans', sans-serif; font-size: 13.5px; line-height: 1.5; color: #9aa6bd; margin-top: 12px;">Ink navy and bright paper. Blue selects; marginalia ochre marks AI.</div>
+          <div style="display: flex; gap: 6px; margin-top: 16px;">
+            <span style="flex: 1; height: 30px; border-radius: 6px; background: #7fa5ec;"></span>
+            <span style="flex: 1; height: 30px; border-radius: 6px; background: #cf9b6a;"></span>
+            <span style="flex: 1; height: 30px; border-radius: 6px; background: #4f9c86;"></span>
+            <span style="flex: 1; height: 30px; border-radius: 6px; background: #fbf8f1;"></span>
+            <span style="flex: 1; height: 30px; border-radius: 6px; background: #1a2030; border: 1px solid rgba(255,255,255,0.14);"></span>
+          </div>
+        </div>
+        <div style="padding: 14px 20px; background: #fbf8f1; font-family: 'IBM Plex Sans', sans-serif; font-size: 12.5px; color: #1b2233;">Slide paper · <span style="font-family: 'IBM Plex Mono', monospace;">A1 B1 C2</span></div>
+      </div>
+
+      <div style="border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);">
+        <div style="padding: 20px; background: #101314;">
+          <div style="font-family: 'Playfair Display', serif; font-size: 27px; font-weight: 700; font-style: italic; color: #e9eef0; line-height: 1.1;">Drafting</div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #93a0a4; margin-top: 6px;">Playfair · Space Grotesk · JetBrains</div>
+          <div style="font-family: 'Space Grotesk', sans-serif; font-size: 13.5px; line-height: 1.5; color: #93a0a4; margin-top: 12px;">Graphite shell, blueprint paper. Cyan selects; machine orange marks AI.</div>
+          <div style="display: flex; gap: 6px; margin-top: 16px;">
+            <span style="flex: 1; height: 30px; border-radius: 6px; background: #2fbfd4;"></span>
+            <span style="flex: 1; height: 30px; border-radius: 6px; background: #ff8a5c;"></span>
+            <span style="flex: 1; height: 30px; border-radius: 6px; background: #57b894;"></span>
+            <span style="flex: 1; height: 30px; border-radius: 6px; background: #f2f4f5;"></span>
+            <span style="flex: 1; height: 30px; border-radius: 6px; background: #171b1d; border: 1px solid rgba(255,255,255,0.14);"></span>
+          </div>
+        </div>
+        <div style="padding: 14px 20px; background: #f2f4f5; font-family: 'Space Grotesk', sans-serif; font-size: 12.5px; color: #14181a;">Slide paper · <span style="font-family: 'JetBrains Mono', monospace;">A1 B1 C2</span></div>
+      </div>
+
+      <div style="border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);">
+        <div style="padding: 20px; background: #121110;">
+          <div style="font-family: 'Playfair Display', serif; font-size: 27px; font-weight: 900; color: #faf7f2; line-height: 1.1; letter-spacing: -0.02em;">Broadsheet</div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #a39d95; margin-top: 6px;">Playfair 900 · Archivo · Plex Mono</div>
+          <div style="font-family: 'Archivo', sans-serif; font-size: 13.5px; line-height: 1.5; color: #a39d95; margin-top: 12px;">Near-black and newsprint. Vermilion selects; gold marks AI.</div>
+          <div style="display: flex; gap: 6px; margin-top: 16px;">
+            <span style="flex: 1; height: 30px; border-radius: 6px; background: #e0402a;"></span>
+            <span style="flex: 1; height: 30px; border-radius: 6px; background: #c8a24a;"></span>
+            <span style="flex: 1; height: 30px; border-radius: 6px; background: #2f7d5f;"></span>
+            <span style="flex: 1; height: 30px; border-radius: 6px; background: #fffdf8;"></span>
+            <span style="flex: 1; height: 30px; border-radius: 6px; background: #1b1918; border: 1px solid rgba(255,255,255,0.14);"></span>
+          </div>
+        </div>
+        <div style="padding: 14px 20px; background: #fffdf8; font-family: 'Archivo', sans-serif; font-size: 12.5px; color: #16130f;">Slide paper · <span style="font-family: 'IBM Plex Mono', monospace;">A1 B1 C2</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;pairing&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Chalkline&quot;,&quot;Lecture Hall&quot;,&quot;Drafting&quot;,&quot;Broadsheet&quot;],&quot;default&quot;:&quot;Drafting&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;},&quot;mode&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;dark&quot;,&quot;light&quot;],&quot;default&quot;:&quot;dark&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;},&quot;density&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;touch&quot;,&quot;compact&quot;],&quot;default&quot;:&quot;touch&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+const THEMES = [
+  {
+    name: 'Chalkline',
+    fonts: 'Playfair Display · Work Sans · Courier Prime',
+    blurb: 'Warm blackboard shell, cream slide paper. Chalk amber is the only interaction colour; sage green marks everything the model authored.',
+    display: "'Playfair Display', Georgia, serif",
+    ui: "'Work Sans', system-ui, sans-serif",
+    mono: "'Courier Prime', ui-monospace, monospace",
+    dark: {
+      app: '#17201d', app2: '#1e2926', app3: '#121a17',
+      line: 'rgba(236,228,208,0.14)', line2: 'rgba(236,228,208,0.08)',
+      ink: '#f1ebda', ink2: '#a7b2ab', ink3: '#78837c',
+      accent: '#e0a33d', accent2: '#c8892a', accentInk: '#23180a',
+      accentSoft: 'rgba(224,163,61,0.16)', accentLine: 'rgba(224,163,61,0.45)',
+      ai: '#7fb7a3', aiSoft: 'rgba(127,183,163,0.16)', aiLine: 'rgba(127,183,163,0.45)',
+      paper: '#f5efe0', paper2: '#ebe3d0', paperLine: 'rgba(38,48,44,0.10)',
+      paperInk: '#26302c', paperInk2: '#6b7671', paperEdge: 'rgba(0,0,0,0.5)',
+      data: '#5f8f6f', dataSoft: 'rgba(95,143,111,0.14)',
+      warn: '#cf8b3a', warnSoft: 'rgba(207,139,58,0.16)', danger: '#c25a4a'
+    },
+    light: {
+      app: '#d9d0bc', app2: '#efe9db', app3: '#e5ddca',
+      line: 'rgba(38,48,44,0.16)', line2: 'rgba(38,48,44,0.08)',
+      ink: '#26302c', ink2: '#5d6a63', ink3: '#8a948d',
+      accent: '#a9761f', accent2: '#8c6017', accentInk: '#fdf8ec',
+      accentSoft: 'rgba(169,118,31,0.14)', accentLine: 'rgba(169,118,31,0.4)',
+      ai: '#2f7f68', aiSoft: 'rgba(47,127,104,0.12)', aiLine: 'rgba(47,127,104,0.38)',
+      paper: '#fffdf6', paper2: '#f4eee0', paperLine: 'rgba(31,39,36,0.10)',
+      paperInk: '#1f2724', paperInk2: '#6b7671', paperEdge: 'rgba(0,0,0,0.22)',
+      data: '#3d7a54', dataSoft: 'rgba(61,122,84,0.12)',
+      warn: '#a8681c', warnSoft: 'rgba(168,104,28,0.15)', danger: '#a8412f'
+    }
+  },
+  {
+    name: 'Lecture Hall',
+    fonts: 'Playfair Display · IBM Plex Sans · IBM Plex Mono',
+    blurb: 'Ink-navy shell, bright rag paper. A single ink blue for selection; marginalia ochre for AI, so machine notes read like a hand in the margin.',
+    display: "'Playfair Display', Georgia, serif",
+    ui: "'IBM Plex Sans', system-ui, sans-serif",
+    mono: "'IBM Plex Mono', ui-monospace, monospace",
+    dark: {
+      app: '#131722', app2: '#1a2030', app3: '#0e1220',
+      line: 'rgba(214,224,240,0.14)', line2: 'rgba(214,224,240,0.07)',
+      ink: '#eef2f8', ink2: '#9aa6bd', ink3: '#6f7b93',
+      accent: '#7fa5ec', accent2: '#5f88d8', accentInk: '#0c1426',
+      accentSoft: 'rgba(127,165,236,0.16)', accentLine: 'rgba(127,165,236,0.45)',
+      ai: '#cf9b6a', aiSoft: 'rgba(207,155,106,0.16)', aiLine: 'rgba(207,155,106,0.45)',
+      paper: '#fbf8f1', paper2: '#efeade', paperLine: 'rgba(27,34,51,0.10)',
+      paperInk: '#1b2233', paperInk2: '#68728a', paperEdge: 'rgba(0,0,0,0.55)',
+      data: '#4f9c86', dataSoft: 'rgba(79,156,134,0.14)',
+      warn: '#d59b3f', warnSoft: 'rgba(213,155,63,0.16)', danger: '#cc5f52'
+    },
+    light: {
+      app: '#dbe0ea', app2: '#f2f4f9', app3: '#e7eaf2',
+      line: 'rgba(27,34,51,0.15)', line2: 'rgba(27,34,51,0.07)',
+      ink: '#1b2233', ink2: '#5a657c', ink3: '#828b9d',
+      accent: '#2f5fbf', accent2: '#254c9c', accentInk: '#f4f7ff',
+      accentSoft: 'rgba(47,95,191,0.12)', accentLine: 'rgba(47,95,191,0.38)',
+      ai: '#96601f', aiSoft: 'rgba(150,96,31,0.12)', aiLine: 'rgba(150,96,31,0.36)',
+      paper: '#ffffff', paper2: '#f1eee6', paperLine: 'rgba(27,34,51,0.10)',
+      paperInk: '#161c2b', paperInk2: '#68728a', paperEdge: 'rgba(0,0,0,0.2)',
+      data: '#2f7a68', dataSoft: 'rgba(47,122,104,0.12)',
+      warn: '#9a6f18', warnSoft: 'rgba(154,111,24,0.14)', danger: '#a8422f'
+    }
+  },
+  {
+    name: 'Drafting',
+    fonts: 'Playfair Display (italic) · Space Grotesk · JetBrains Mono',
+    blurb: 'Graphite instrument shell, blueprint-white paper. Cyan is selection and nothing else; machine orange is reserved for model output and OCR.',
+    display: "'Playfair Display', Georgia, serif",
+    ui: "'Space Grotesk', system-ui, sans-serif",
+    mono: "'JetBrains Mono', ui-monospace, monospace",
+    dark: {
+      app: '#101314', app2: '#171b1d', app3: '#0a0d0e',
+      line: 'rgba(233,238,240,0.13)', line2: 'rgba(233,238,240,0.07)',
+      ink: '#e9eef0', ink2: '#93a0a4', ink3: '#6c7679',
+      accent: '#2fbfd4', accent2: '#1e9db0', accentInk: '#04191d',
+      accentSoft: 'rgba(47,191,212,0.15)', accentLine: 'rgba(47,191,212,0.45)',
+      ai: '#ff8a5c', aiSoft: 'rgba(255,138,92,0.15)', aiLine: 'rgba(255,138,92,0.45)',
+      paper: '#f2f4f5', paper2: '#e4e9ea', paperLine: 'rgba(20,24,26,0.11)',
+      paperInk: '#14181a', paperInk2: '#5f6b6e', paperEdge: 'rgba(0,0,0,0.6)',
+      data: '#57b894', dataSoft: 'rgba(87,184,148,0.14)',
+      warn: '#e0a137', warnSoft: 'rgba(224,161,55,0.15)', danger: '#e05c4a'
+    },
+    light: {
+      app: '#ccd4d6', app2: '#e9edee', app3: '#dce2e4',
+      line: 'rgba(20,24,26,0.15)', line2: 'rgba(20,24,26,0.07)',
+      ink: '#14181a', ink2: '#556063', ink3: '#7d8789',
+      accent: '#0d8fa3', accent2: '#0a7383', accentInk: '#f0feff',
+      accentSoft: 'rgba(13,143,163,0.12)', accentLine: 'rgba(13,143,163,0.4)',
+      ai: '#c2410c', aiSoft: 'rgba(194,65,12,0.1)', aiLine: 'rgba(194,65,12,0.36)',
+      paper: '#ffffff', paper2: '#eef2f3', paperLine: 'rgba(20,24,26,0.1)',
+      paperInk: '#14181a', paperInk2: '#5f6b6e', paperEdge: 'rgba(0,0,0,0.2)',
+      data: '#2f7d64', dataSoft: 'rgba(47,125,100,0.12)',
+      warn: '#9a6c14', warnSoft: 'rgba(154,108,20,0.14)', danger: '#b6402f'
+    }
+  },
+  {
+    name: 'Broadsheet',
+    fonts: 'Playfair Display 900 · Archivo · IBM Plex Mono',
+    blurb: 'Near-black shell, newsprint slides, headline-weight Playfair. Vermilion selects; gold marks AI authorship — high contrast for a room-sized screen.',
+    display: "'Playfair Display', Georgia, serif",
+    ui: "'Archivo', system-ui, sans-serif",
+    mono: "'IBM Plex Mono', ui-monospace, monospace",
+    dark: {
+      app: '#121110', app2: '#1b1918', app3: '#0b0a09',
+      line: 'rgba(250,247,242,0.15)', line2: 'rgba(250,247,242,0.07)',
+      ink: '#faf7f2', ink2: '#a39d95', ink3: '#75706a',
+      accent: '#e0402a', accent2: '#c03320', accentInk: '#fff4f1',
+      accentSoft: 'rgba(224,64,42,0.16)', accentLine: 'rgba(224,64,42,0.45)',
+      ai: '#c8a24a', aiSoft: 'rgba(200,162,74,0.16)', aiLine: 'rgba(200,162,74,0.45)',
+      paper: '#fffdf8', paper2: '#f1ece1', paperLine: 'rgba(22,19,15,0.11)',
+      paperInk: '#16130f', paperInk2: '#66605a', paperEdge: 'rgba(0,0,0,0.65)',
+      data: '#2f7d5f', dataSoft: 'rgba(47,125,95,0.14)',
+      warn: '#d69a1c', warnSoft: 'rgba(214,154,28,0.16)', danger: '#c0392b'
+    },
+    light: {
+      app: '#d5cec2', app2: '#f4f1ea', app3: '#e8e3d9',
+      line: 'rgba(22,19,15,0.16)', line2: 'rgba(22,19,15,0.07)',
+      ink: '#16130f', ink2: '#57514a', ink3: '#837c74',
+      accent: '#c8321d', accent2: '#a52815', accentInk: '#fff6f3',
+      accentSoft: 'rgba(200,50,29,0.11)', accentLine: 'rgba(200,50,29,0.38)',
+      ai: '#8a6a18', aiSoft: 'rgba(138,106,24,0.12)', aiLine: 'rgba(138,106,24,0.36)',
+      paper: '#ffffff', paper2: '#f2eee4', paperLine: 'rgba(22,19,15,0.1)',
+      paperInk: '#16130f', paperInk2: '#66605a', paperEdge: 'rgba(0,0,0,0.22)',
+      data: '#276a50', dataSoft: 'rgba(39,106,80,0.12)',
+      warn: '#8f6512', warnSoft: 'rgba(143,101,18,0.14)', danger: '#a3301f'
+    }
+  }
+];
+
+class Component extends DCLogic {
+  state = { p: null, mode: null };
+
+  get idx() {
+    if (this.state.p !== null) return this.state.p;
+    const i = THEMES.findIndex((t) => t.name === this.props.pairing);
+    return i < 0 ? 0 : i;
+  }
+
+  get mode() {
+    return this.state.mode || (this.props.mode === 'light' ? 'light' : 'dark');
+  }
+
+  componentDidMount() { this.icons(); }
+  componentDidUpdate() { this.icons(); }
+
+  icons() {
+    if (window.lucide && window.lucide.createIcons) {
+      try { window.lucide.createIcons(); } catch (e) {}
+    } else if (!this._retried) {
+      this._retried = true;
+      setTimeout(() => { this._retried = false; this.icons(); }, 400);
+    }
+  }
+
+  renderVals() {
+    const t = THEMES[this.idx];
+    const mode = this.mode;
+    const c = t[mode];
+    const touch = (this.props.density || 'touch') !== 'compact';
+
+    const vars = {
+      '--s-app': c.app, '--s-app-2': c.app2, '--s-app-3': c.app3,
+      '--s-line': c.line, '--s-line-2': c.line2,
+      '--s-ink': c.ink, '--s-ink-2': c.ink2, '--s-ink-3': c.ink3,
+      '--s-accent': c.accent, '--s-accent-2': c.accent2, '--s-accent-ink': c.accentInk,
+      '--s-accent-soft': c.accentSoft, '--s-accent-line': c.accentLine,
+      '--s-ai': c.ai, '--s-ai-soft': c.aiSoft, '--s-ai-line': c.aiLine,
+      '--s-paper': c.paper, '--s-paper-2': c.paper2, '--s-paper-line': c.paperLine,
+      '--s-paper-ink': c.paperInk, '--s-paper-ink-2': c.paperInk2, '--s-paper-edge': c.paperEdge,
+      '--s-data': c.data, '--s-data-soft': c.dataSoft,
+      '--s-warn': c.warn, '--s-warn-soft': c.warnSoft, '--s-danger': c.danger,
+      '--s-font-display': t.display, '--s-font-ui': t.ui, '--s-font-mono': t.mono,
+      '--s-tap': touch ? '40px' : '32px',
+      '--s-fs': touch ? '14px' : '13px',
+      '--s-fs-sm': touch ? '12.5px' : '12px'
+    };
+
+    const chip = (on) => ({
+      padding: '9px 15px', borderRadius: '8px', cursor: 'pointer',
+      fontFamily: "'Playfair Display', Georgia, serif", fontSize: '15px', fontWeight: 600,
+      border: '1px solid ' + (on ? c.accentLine : 'transparent'),
+      background: on ? c.accentSoft : 'transparent',
+      color: on ? '#f6f2ea' : '#948f88'
+    });
+    const modeChip = (on) => ({
+      padding: '7px 14px', borderRadius: '8px', cursor: 'pointer',
+      fontSize: '13px', fontWeight: 600, letterSpacing: '0.02em', fontFamily: t.ui,
+      border: '1px solid ' + (on ? 'rgba(255,255,255,0.24)' : 'transparent'),
+      background: on ? 'rgba(255,255,255,0.12)' : 'transparent',
+      color: on ? '#f6f2ea' : '#948f88'
+    });
+
+    return {
+      themeVars: vars,
+      chip0: chip(this.idx === 0),
+      chip1: chip(this.idx === 1),
+      chip2: chip(this.idx === 2),
+      chip3: chip(this.idx === 3),
+      modeDark: modeChip(mode === 'dark'),
+      modeLight: modeChip(mode === 'light'),
+      pairName: t.name,
+      pairFonts: t.fonts,
+      pairBlurb: t.blurb,
+      setP0: () => this.setState({ p: 0 }),
+      setP1: () => this.setState({ p: 1 }),
+      setP2: () => this.setState({ p: 2 }),
+      setP3: () => this.setState({ p: 3 }),
+      setDark: () => this.setState({ mode: 'dark' }),
+      setLight: () => this.setState({ mode: 'light' })
+    };
+  }
+}
+</script>
+</body>
+</html>

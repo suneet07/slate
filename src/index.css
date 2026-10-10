@@ -1,0 +1,148 @@
+:root {
+  /* ─── Drafting Theme — exact spec from Slate Color & Type Pairings ─── */
+  /* Shell */
+  --s-app: #101314;
+  --s-app-2: #171b1d;
+  --s-app-3: #0a0d0e;
+  --s-line: rgba(233,238,240,0.13);
+  --s-line-2: rgba(233,238,240,0.07);
+  /* Ink */
+  --s-ink: #e9eef0;
+  --s-ink-2: #93a0a4;
+  --s-ink-3: #6c7679;
+  /* Accent = Cyan (selection only) */
+  --s-accent: #2fbfd4;
+  --s-accent-2: #1e9db0;
+  --s-accent-ink: #04191d;
+  --s-accent-soft: rgba(47,191,212,0.15);
+  --s-accent-line: rgba(47,191,212,0.45);
+  /* AI = Machine Orange (model output / OCR) */
+  --s-ai: #ff8a5c;
+  --s-ai-soft: rgba(255,138,92,0.15);
+  --s-ai-line: rgba(255,138,92,0.45);
+  /* Paper */
+  --s-paper: #f2f4f5;
+  --s-paper-2: #e4e9ea;
+  --s-paper-line: rgba(20,24,26,0.11);
+  --s-paper-ink: #14181a;
+  --s-paper-ink-2: #5f6b6e;
+  --s-paper-edge: rgba(0,0,0,0.6);
+  /* Data / Warn / Danger */
+  --s-data: #57b894;
+  --s-data-soft: rgba(87,184,148,0.14);
+  --s-warn: #e0a137;
+  --s-warn-soft: rgba(224,161,55,0.15);
+  --s-danger: #e05c4a;
+  /* Radius */
+  --s-radius: 10px;
+  --s-radius-sm: 6px;
+  /* Fonts */
+  --s-font-display: 'Playfair Display', Georgia, serif;
+  --s-font-ui: 'Space Grotesk', system-ui, sans-serif;
+  --s-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  /* Sizing */
+  --s-tap: 40px;
+  --s-fs: 14px;
+  --s-fs-sm: 12.5px;
+
+  /* Legacy aliases */
+  --bg-dark: var(--s-app);
+  --bg-canvas: var(--s-app);
+  --panel-bg: var(--s-app-2);
+  --panel-border: var(--s-line);
+  --panel-glass: var(--s-app-2);
+  --accent-primary: var(--s-accent);
+  --accent-ai: var(--s-ai);
+  --paper-bg: var(--s-paper);
+  --text-main: var(--s-ink);
+  --text-muted: var(--s-ink-2);
+  --text-dim: var(--s-ink-3);
+  --font-display: var(--s-font-display);
+  --font-ui: var(--s-font-ui);
+  --font-mono: var(--s-font-mono);
+  --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body, html, #root {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: var(--s-font-ui);
+  background-color: var(--s-app);
+  color: var(--s-ink);
+  user-select: none;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Opaque panel (not glassmorphic — projector legibility) */
+.glass-panel {
+  background: var(--s-app-2);
+  border: 1px solid var(--s-line);
+  box-shadow: var(--shadow-lg);
+  border-radius: 14px;
+}
+
+.mono-font {
+  font-family: var(--s-font-mono);
+}
+
+/* Pulse animation for Speak button (exact from design) */
+@keyframes s-pulse {
+  0% { box-shadow: 0 0 0 0 var(--s-accent-soft); }
+  70% { box-shadow: 0 0 0 10px rgba(0,0,0,0); }
+  100% { box-shadow: 0 0 0 0 rgba(0,0,0,0); }
+}
+
+/* Legacy pulse for recording */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(224, 92, 74, 0.7);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 12px rgba(224, 92, 74, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(224, 92, 74, 0);
+  }
+}
+
+.animate-pulse-mic {
+  animation: pulse-ring 1.8s infinite;
+}
+
+/* Loader2 icons are tagged `animate-spin` (a Tailwind name) but this project ships plain
+   CSS, so without this rule every "processing" spinner sat frozen. */
+@keyframes s-spin {
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: s-spin 0.9s linear infinite;
+}
